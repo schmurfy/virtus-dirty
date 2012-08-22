@@ -34,6 +34,8 @@ module Virtus
     def attribute_dirty?(name)
       dirty_session.dirty?(name)
     end
+    
+    alias :changed? :attribute_dirty?
 
     # Explicitly sets an attribute as dirty.
     #
@@ -76,7 +78,11 @@ module Virtus
     def dirty_session
       @_dirty_session ||= Session.new(self)
     end
-
+    
+    def reset_attribute!(name)
+      self[name] = original_attributes[name]
+    end
+    
     module Attribute
       # Creates an attribute writer with dirty tracking
       #
